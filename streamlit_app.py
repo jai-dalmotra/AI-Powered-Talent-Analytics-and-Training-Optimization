@@ -122,8 +122,14 @@ tabs = st.tabs([
 ])
 
 with tabs[0]:
-    st.subheader("📊 Overall Sentiment Distribution")
-    plot_sentiment_distribution(feedback_df)
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    st.subheader("📊 Test Sentiment Plot")
+    fig, ax = plt.subplots()
+    sns.countplot(x="tb_sentiment", data=feedback_df, palette="Set2", ax=ax)
+    st.pyplot(fig)
+
 
 with tabs[1]:
     st.subheader("🏆 Top Trainers by Average Rating")
