@@ -110,6 +110,14 @@ st.download_button(
     mime="text/csv"
 )
 
+
+# 🔧 Dark mode settings for plots
+plt.style.use("dark_background")
+sns.set_style("darkgrid", {
+    'axes.facecolor': '#222222',
+    'figure.facecolor': '#222222'
+})
+
 # ─────────────────────────────────────────────────────────────
 # 📊 DASHBOARD TABS
 # ─────────────────────────────────────────────────────────────
@@ -124,56 +132,85 @@ tabs = st.tabs([
 
 with tabs[0]:
     st.subheader("📊 Overall Sentiment Distribution")
-    fig, ax = plt.subplots(figsize=(6, 4))
+
+    fig, ax = plt.subplots(figsize=(6, 4), facecolor="#222222")
     sns.countplot(x="tb_sentiment", data=feedback_df, palette="Set2", ax=ax)
-    ax.set_title("TextBlob Sentiment Count")
-    ax.set_xlabel("Sentiment")
-    ax.set_ylabel("Count")
+
+    ax.set_title("TextBlob Sentiment Count", color='white')
+    ax.set_xlabel("Sentiment", color='white')
+    ax.set_ylabel("Count", color='white')
+    ax.tick_params(colors='white')
+
     fig.tight_layout()
     st.pyplot(fig)
 
 with tabs[1]:
     st.subheader("🏆 Top Trainers by Average Rating")
-    avg_ratings = feedback_df.groupby("trainer_id")["rating"].mean().sort_values(ascending=False).head(10)
-    fig, ax = plt.subplots(figsize=(6.5, 4))
-    sns.barplot(x=avg_ratings.index.astype(str), y=avg_ratings.values, palette="Blues_d", ax=ax)
-    ax.set_title("Top 10 Trainer Ratings")
-    ax.set_xlabel("Trainer ID")
-    ax.set_ylabel("Average Rating")
+
+    top_trainers = (
+        feedback_df.groupby("trainer_id")["rating"]
+        .mean().sort_values(ascending=False).head(10)
+    )
+
+    fig, ax = plt.subplots(figsize=(6, 4), facecolor="#222222")
+    sns.barplot(x=top_trainers.values, y=top_trainers.index, palette="viridis", ax=ax)
+
+    ax.set_title("Top 10 Trainers by Average Rating", color='white')
+    ax.set_xlabel("Average Rating", color='white')
+    ax.set_ylabel("Trainer ID", color='white')
+    ax.tick_params(colors='white')
+
     fig.tight_layout()
     st.pyplot(fig)
 
 with tabs[2]:
-    st.subheader("📈 Rating vs Sentiment")
-    fig, ax = plt.subplots(figsize=(6.5, 4))
+    st.subheader("📈 Sentiment vs Rating")
+
+    fig, ax = plt.subplots(figsize=(6, 4), facecolor="#222222")
     sns.boxplot(x="tb_sentiment", y="rating", data=feedback_df, palette="coolwarm", ax=ax)
-    ax.set_title("Rating by Sentiment")
-    ax.set_xlabel("Sentiment")
-    ax.set_ylabel("Rating")
+
+    ax.set_title("Rating Distribution by Sentiment", color='white')
+    ax.set_xlabel("Sentiment", color='white')
+    ax.set_ylabel("Rating", color='white')
+    ax.tick_params(colors='white')
+
     fig.tight_layout()
     st.pyplot(fig)
+
 
 with tabs[3]:
-    st.subheader("👥 Learner Engagement")
+    st.subheader("👥 Learner Engagement Levels")
+
     learner_counts = feedback_df["learner_id"].value_counts()
-    fig, ax = plt.subplots(figsize=(6, 4))
-    sns.histplot(learner_counts, bins=20, kde=False, color="purple", ax=ax)
-    ax.set_title("Feedbacks per Learner")
-    ax.set_xlabel("Feedback Count")
-    ax.set_ylabel("Number of Learners")
+
+    fig, ax = plt.subplots(figsize=(6, 4), facecolor="#222222")
+    sns.histplot(learner_counts, bins=20, kde=False, color="skyblue", ax=ax)
+
+    ax.set_title("Distribution of Feedbacks per Learner", color='white')
+    ax.set_xlabel("Number of Feedbacks", color='white')
+    ax.set_ylabel("Number of Learners", color='white')
+    ax.tick_params(colors='white')
+
     fig.tight_layout()
     st.pyplot(fig)
 
+
 with tabs[4]:
-    st.subheader(f"🧭 Learner Journey for `{selected_learner}`")
-    learner_df = feedback_df[feedback_df["learner_id"] == selected_learner].sort_values("trainer_id")
-    fig, ax = plt.subplots(figsize=(7, 4))
-    sns.stripplot(x="trainer_id", y="learner_id", data=learner_df, size=7, alpha=0.7, ax=ax)
-    ax.set_title("Trainer Interactions")
-    ax.set_xlabel("Trainer ID")
-    ax.set_ylabel("Learner ID")
+    st.subheader(f"🧭 Journey for Learner `{selected_learner}`")
+
+    learner_df = feedback_df[feedback_df["learner_id"] == selected_learner]
+
+    fig, ax = plt.subplots(figsize=(6, 4), facecolor="#222222")
+    sns.lineplot(data=learner_df, x=learner_df.index, y="rating", marker="o", ax=ax)
+
+    ax.set_title("Feedback Ratings Over Time", color='white')
+    ax.set_xlabel("Session Index", color='white')
+    ax.set_ylabel("Rating", color='white')
+    ax.tick_params(colors='white')
+
     fig.tight_layout()
     st.pyplot(fig)
+
 
 with tabs[5]:
     st.subheader("🗃️ Raw Feedback Data")
