@@ -51,6 +51,13 @@ def preprocess_feedback_df(df: pd.DataFrame) -> pd.DataFrame:
         'FeedbackScore': 'rating'
     })
 
+    # 🛠️ Convert textual ratings to numeric
+    rating_map = {"Low": 1.0, "Medium": 2.0, "High": 3.0}
+    df["rating"] = df["rating"].map(rating_map)
+
+    # Drop rows where rating conversion failed (e.g., unexpected text)
+    df = df.dropna(subset=["rating"])
+
     if 'feedback_text' not in df.columns:
         df['feedback_text'] = "Feedback score: " + df['rating'].astype(str)
 
