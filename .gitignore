@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data files (optional - if large or sensitive)
+data/*.csv
+!data/session_feedback.csv
+!data/trainer_profiles.csv
+
+# Environment
+.env
+venv/
+env/
+*.egg-info/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Streamlit specific
+.streamlit/
+
+# VSCode or other IDE folders
+.vscode/
+.idea/
+
+# Compiled
+*.so
+*.out
+*.dll
+*.exe
+
+# Notebook output (optional)
+*.nbconvert.ipynb

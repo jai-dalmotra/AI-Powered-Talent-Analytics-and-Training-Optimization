@@ -1,0 +1,24 @@
+# Core
+pandas
+numpy<2.0
+scikit-learn
+scipy
+
+# Visualizations
+matplotlib
+seaborn
+plotly
+
+# NLP
+textblob
+vaderSentiment
+
+# Recommender
+scikit-surprise==1.1.4
+
+# Streamlit
+streamlit
+
+# Optional Utilities
+jupyterlab
+notebook
