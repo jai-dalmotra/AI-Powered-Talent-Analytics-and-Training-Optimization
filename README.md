@@ -1,7 +1,7 @@
 # Talent-Analytics-and-Training-Optimization
 ##  🧠 AI-Powered Feedback & Recommendation System for Gig-Based EdTech Platforms
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://<your-app-name>.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-powered-talent-analytics-and-training-optimization.streamlit.app)
 
 Welcome to the **full-stack ML/NLP project** designed to automate and personalize training experiences in EdTech using learner feedback. This repository contains all code, configurations, notebooks, and documentation to:
 
