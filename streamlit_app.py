@@ -2,6 +2,8 @@
 
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from src.data_loader import preprocess_feedback_df, load_csv
 from src.sentiment_analysis import add_sentiment_columns
 from src.recommender import prepare_surprise_data, train_svd_model
@@ -51,7 +53,6 @@ col3.metric("🧑‍🏫 Unique Trainers", feedback_df['trainer_id'].nunique())
 with st.spinner("🤖 Training SVD-based recommender model..."):
 
     # 🔍 Debugging: Check rating column
-    st.write("🔍 Rating column dtype:", feedback_df["rating"].dtype)
     st.write("🔍 Sample ratings (first 10):", feedback_df["rating"].unique()[:10])
 
     # Proceed with model training
@@ -122,30 +123,57 @@ tabs = st.tabs([
 ])
 
 with tabs[0]:
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-
-    st.subheader("📊 Test Sentiment Plot")
-    fig, ax = plt.subplots()
+    st.subheader("📊 Overall Sentiment Distribution")
+    fig, ax = plt.subplots(figsize=(6, 4))
     sns.countplot(x="tb_sentiment", data=feedback_df, palette="Set2", ax=ax)
+    ax.set_title("TextBlob Sentiment Count")
+    ax.set_xlabel("Sentiment")
+    ax.set_ylabel("Count")
+    fig.tight_layout()
     st.pyplot(fig)
-
 
 with tabs[1]:
     st.subheader("🏆 Top Trainers by Average Rating")
-    plot_avg_rating_per_trainer(feedback_df)
+    avg_ratings = feedback_df.groupby("trainer_id")["rating"].mean().sort_values(ascending=False).head(10)
+    fig, ax = plt.subplots(figsize=(6.5, 4))
+    sns.barplot(x=avg_ratings.index.astype(str), y=avg_ratings.values, palette="Blues_d", ax=ax)
+    ax.set_title("Top 10 Trainer Ratings")
+    ax.set_xlabel("Trainer ID")
+    ax.set_ylabel("Average Rating")
+    fig.tight_layout()
+    st.pyplot(fig)
 
 with tabs[2]:
-    st.subheader("📈 Sentiment vs Rating")
-    plot_sentiment_vs_rating(feedback_df)
+    st.subheader("📈 Rating vs Sentiment")
+    fig, ax = plt.subplots(figsize=(6.5, 4))
+    sns.boxplot(x="tb_sentiment", y="rating", data=feedback_df, palette="coolwarm", ax=ax)
+    ax.set_title("Rating by Sentiment")
+    ax.set_xlabel("Sentiment")
+    ax.set_ylabel("Rating")
+    fig.tight_layout()
+    st.pyplot(fig)
 
 with tabs[3]:
-    st.subheader("👥 Learner Engagement Levels")
-    plot_learner_engagement(feedback_df)
+    st.subheader("👥 Learner Engagement")
+    learner_counts = feedback_df["learner_id"].value_counts()
+    fig, ax = plt.subplots(figsize=(6, 4))
+    sns.histplot(learner_counts, bins=20, kde=False, color="purple", ax=ax)
+    ax.set_title("Feedbacks per Learner")
+    ax.set_xlabel("Feedback Count")
+    ax.set_ylabel("Number of Learners")
+    fig.tight_layout()
+    st.pyplot(fig)
 
 with tabs[4]:
-    st.subheader(f"🧭 Journey for Learner `{selected_learner}`")
-    plot_learner_journey(feedback_df[feedback_df["learner_id"] == selected_learner])
+    st.subheader(f"🧭 Learner Journey for `{selected_learner}`")
+    learner_df = feedback_df[feedback_df["learner_id"] == selected_learner].sort_values("trainer_id")
+    fig, ax = plt.subplots(figsize=(7, 4))
+    sns.stripplot(x="trainer_id", y="learner_id", data=learner_df, size=7, alpha=0.7, ax=ax)
+    ax.set_title("Trainer Interactions")
+    ax.set_xlabel("Trainer ID")
+    ax.set_ylabel("Learner ID")
+    fig.tight_layout()
+    st.pyplot(fig)
 
 with tabs[5]:
     st.subheader("🗃️ Raw Feedback Data")
