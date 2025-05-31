@@ -49,6 +49,12 @@ col3.metric("🧑‍🏫 Unique Trainers", feedback_df['trainer_id'].nunique())
 # 🤖 TRAINING RECOMMENDER MODEL
 # ─────────────────────────────────────────────────────────────
 with st.spinner("🤖 Training SVD-based recommender model..."):
+
+    # 🔍 Debugging: Check rating column
+    st.write("🔍 Rating column dtype:", feedback_df["rating"].dtype)
+    st.write("🔍 Sample ratings (first 10):", feedback_df["rating"].unique()[:10])
+
+    # Proceed with model training
     data = prepare_surprise_data(feedback_df)
     algo, _ = train_svd_model(data)
 
