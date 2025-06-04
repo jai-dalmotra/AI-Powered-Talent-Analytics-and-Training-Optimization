@@ -23,6 +23,52 @@ st.set_page_config(
     layout="wide"
 )
 
+with st.container():
+    st.markdown(
+        """
+        <style>
+        /* Overlay */
+        #banner-popup {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background-color: #111;
+            border: 2px solid gold;
+            border-radius: 15px;
+            z-index: 9999;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(255,215,0,0.6);
+            text-align: center;
+        }
+
+        #banner-popup img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        #banner-popup button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: gold;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        </style>
+
+        <div id="banner-popup">
+            <img src="assets/ChatGPT Image Jun 4, 2025, 04_11_49 PM.png" />
+            <br/>
+            <button onclick="document.getElementById('banner-popup').style.display='none'">Close</button>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 # 🖼️ Inject Custom CSS and     Logo
 st.markdown("""
 <style>
@@ -90,8 +136,6 @@ st.image("assets/luxe_banner.png", use_container_width=True)
 
 st.title("🎓 AI-Powered Feedback & Recommendation System")
 
-st.title("🎓 AI-Powered Feedback & Recommendation System")
-
 # ─────────────────────────────────────────────────────────────
 # 📥 LOAD & PREPROCESS DATA
 # ─────────────────────────────────────────────────────────────
@@ -129,12 +173,23 @@ with st.spinner("🤖 Training SVD-based recommender model..."):
 # Compute average sentiment per trainer
 trainer_sentiment_df = (
     feedback_df.groupby("trainer_id")["vader_score"]
+    .mean()
+    .reset_index()
     .rename(columns={"vader_score": "avg_sentiment"})
 )
 
 # ─────────────────────────────────────────────────────────────
 # 🔧 SIDEBAR CONTROLS
 # ─────────────────────────────────────────────────────────────
+st.sidebar.markdown(
+    """
+    <div style="text-align: center; padding-bottom: 10px;">
+        <img src="assets/luxe_banner.png" width="120" />
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 st.sidebar.header("⚙️ Recommender Controls")
 
 learner_ids = sorted(feedback_df["learner_id"].unique().tolist())
