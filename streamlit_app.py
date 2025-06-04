@@ -132,8 +132,6 @@ input, .stSelectbox, .stSlider {
 </style>
 """, unsafe_allow_html=True)
 
-st.image("assets/luxe_banner.png", use_container_width=True)
-
 st.title("🎓 AI-Powered Feedback & Recommendation System")
 
 # ─────────────────────────────────────────────────────────────
@@ -184,7 +182,7 @@ trainer_sentiment_df = (
 st.sidebar.markdown(
     """
     <div style="text-align: center; padding-bottom: 10px;">
-        <img src="assets/luxe_banner.png" width="120" />
+        <img src="assets/luxe_banner.png", width="120" />
     </div>
     """,
     unsafe_allow_html=True
