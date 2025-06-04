@@ -23,7 +23,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 🖼️ Inject Custom CSS and Logo
+# 🖼️ Inject Custom CSS and     Logo
 st.markdown("""
 <style>
 body {
@@ -86,7 +86,8 @@ input, .stSelectbox, .stSlider {
 </style>
 """, unsafe_allow_html=True)
 
-st.image("assets/luxe_banner.png", use_column_width=True)
+st.image("assets/luxe_banner.png", use_container_width=True)
+
 st.title("🎓 AI-Powered Feedback & Recommendation System")
 
 st.title("🎓 AI-Powered Feedback & Recommendation System")
