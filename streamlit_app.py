@@ -23,51 +23,42 @@ st.set_page_config(
     layout="wide"
 )
 
-with st.container():
-    st.markdown(
-        """
-        <style>
-        /* Overlay */
-        #banner-popup {
-            position: fixed;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            background-color: #111;
-            border: 2px solid gold;
-            border-radius: 15px;
-            z-index: 9999;
-            padding: 10px;
-            box-shadow: 0 0 15px rgba(255,215,0,0.6);
-            text-align: center;
-        }
+# Initialize session state for popup visibility
+if "show_banner" not in st.session_state:
+    st.session_state.show_banner = True
 
-        #banner-popup img {
-            width: 100%;
-            border-radius: 10px;
-        }
+import streamlit as st
 
-        #banner-popup button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: gold;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        </style>
+# Popup visibility control
+if "show_popup" not in st.session_state:
+    st.session_state["show_popup"] = True
 
-        <div id="banner-popup">
-            <img src="assets/ChatGPT Image Jun 4, 2025, 04_11_49 PM.png" />
-            <br/>
-            <button onclick="document.getElementById('banner-popup').style.display='none'">Close</button>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+# Close button
+if st.session_state["show_popup"]:
+    with st.container():
+        st.markdown(
+            """
+            <style>
+            .popup-style {
+                background-color: #111;
+                border: 2px solid gold;
+                border-radius: 15px;
+                padding: 10px;
+                text-align: center;
+                box-shadow: 0 0 15px rgba(255,215,0,0.6);
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        with st.columns([1, 6, 1])[1]:  # Center column
+            st.markdown('<div class="popup-style">', unsafe_allow_html=True)
+            st.image("assets/luxe_banner.png", width=300)
+            st.markdown("<p style='color:white;'>Welcome to Luxe Talent Analytics</p>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        if st.button("❌ Close"):
+            st.session_state["show_popup"] = False
 
 # 🖼️ Inject Custom CSS and     Logo
 st.markdown("""
@@ -179,14 +170,10 @@ trainer_sentiment_df = (
 # ─────────────────────────────────────────────────────────────
 # 🔧 SIDEBAR CONTROLS
 # ─────────────────────────────────────────────────────────────
-st.sidebar.markdown(
-    """
-    <div style="text-align: center; padding-bottom: 10px;">
-        <img src="assets/luxe_banner.png", width="120" />
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+with st.sidebar:
+    col1, col2 = st.columns([5, 1])  # Right-align the logo
+    with col2:
+        st.image("assets/luxe_logo.png", width=50)  # adjust width as needed
 
 st.sidebar.header("⚙️ Recommender Controls")
 
