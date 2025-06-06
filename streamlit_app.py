@@ -53,7 +53,7 @@ if st.session_state["show_popup"]:
         )
         with st.columns([1, 6, 1])[1]:  # Center column
             st.markdown('<div class="popup-style">', unsafe_allow_html=True)
-            st.image("assets/luxe_banner.png", width=300)
+            st.image("assets/banner.png", width=300)
             st.markdown("<p style='color:white;'>Welcome to Luxe Talent Analytics</p>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
 
@@ -111,7 +111,6 @@ div[data-testid="stMetricValue"] {
 .sidebar .sidebar-content {
     background-color: #1c1c1c;
     border-radius: 15px;
-    padding: 15px;
     color: #FFD700;
 }
 
@@ -173,7 +172,7 @@ trainer_sentiment_df = (
 with st.sidebar:
     col1, col2 = st.columns([5, 1])  # Right-align the logo
     with col2:
-        st.image("assets/luxe_logo.png", width=50)  # adjust width as needed
+        st.image("assets/logo.png", width=50)  # adjust width as needed
 
 st.sidebar.header("⚙️ Recommender Controls")
 
